@@ -44,6 +44,14 @@
             color: #bfbfbf;
         }
 
+        #question-image {
+            display: none;
+            width: calc(100% - 40px);
+            max-width: 860px;
+            margin: 0 auto 20px auto;
+            border: 1px solid #444;
+        }
+
         #question-prompt {
             max-width: 860px;
             margin: 0 auto 16px auto;
@@ -107,6 +115,7 @@
 
 <div id="quiz-question">
     <p id="question-count"></p>
+    <img id="question-image" src="" alt="Question illustration">
     <p id="question-prompt"></p>
     <div id="answer-buttons"></div>
 </div>
@@ -265,7 +274,13 @@
 
     const renderQuestion = () => {
         const question = quizQuestions[currentQuestion - 1];
+        const questionImageFile = 'image-files/Q' + String(currentQuestion).padStart(2, '0') + '.png';
+
         $('#question-count').text('Question ' + currentQuestion + ' of ' + quizQuestions.length);
+        $('#question-image')
+            .attr('src', questionImageFile)
+            .attr('alt', 'Illustration for question ' + currentQuestion)
+            .show();
         $('#question-prompt').text(question.prompt);
 
         const buttonsHtml = question.answers.map((answer, index) => {
