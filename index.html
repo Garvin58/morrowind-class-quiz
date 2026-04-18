@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <title>Morrowind Class Quiz</title>
     <meta charset="UTF-8">
     <style>
         body {
             background-color: black;
+            font-family: Arial, Helvetica, sans-serif;
         }
 
         button, img {
@@ -15,338 +15,367 @@
             display: block;
         }
 
-        h2, h3,
-        p {
+        button {
+            max-width: 820px;
+            width: calc(100% - 40px);
+            padding: 10px 14px;
+            margin-top: 8px;
+            white-space: normal;
+            cursor: pointer;
+        }
+
+        h2, h3, p {
             color: white;
             text-align: center;
         }
 
         #top-padding {
-            height: 200px;
+            height: 120px;
+        }
+
+        #quiz-question {
+            display: none;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        #question-count {
+            margin-bottom: 20px;
+            color: #bfbfbf;
+        }
+
+        #question-prompt {
+            max-width: 860px;
+            margin: 0 auto 16px auto;
+            line-height: 1.5;
+        }
+
+        #answer-buttons {
+            margin-top: 10px;
+        }
+
+        #answer-buttons button {
+            text-align: left;
+        }
+
+        #answer-buttons .answer-label {
+            font-weight: bold;
+            margin-right: 8px;
+        }
+
+        #result-extra {
+            max-width: 860px;
+            margin: 16px auto 0 auto;
+            color: #bfbfbf;
+            line-height: 1.4;
         }
     </style>
 
     <script src="jquery.min.js"></script>
 </head>
-
 <body>
-<div id='top-padding'></div>
+<div id="top-padding"></div>
 
-<div id='audio-message'>
+<div id="audio-message">
     <h2>This application is mainly audio. Please have audio enabled and set to a reasonable volume.</h2>
 </div>
-<button id='button-1' onclick="playAudio1()">Climb up to the boat deck</button>
-<button id='button-2' style="display: none;" onclick="playAudio2()">Walk off the boat</button>
-<button id='button-3' style="display: none;" onclick="playAudio3()">Pick your race</button>
-<button id='button-4' style="display: none;" onclick="playAudio4()">Enter the census office</button>
-<button id='button-5' style="display: none;" onclick="playAudio5()">Take the class quiz</button>
+<button id="button-1" onclick="playAudio1()">Climb up to the boat deck</button>
+<button id="button-2" style="display: none;" onclick="playAudio2()">Walk off the boat</button>
+<button id="button-3" style="display: none;" onclick="playAudio3()">Pick your race</button>
+<button id="button-4" style="display: none;" onclick="playAudio4()">Enter the census office</button>
+<button id="button-5" style="display: none;" onclick="playAudio5()">Take the class quiz</button>
 
-<div id=quiz-question-1 style="display: none;">
-    <p>
-        On a clear day you chance upon a strange animal, its leg trapped in a hunter's clawsnare. Judging from the
-        bleeding it will not survive long.
-    </p>
-    <button onclick="incrementCombat()">
-        Draw your dagger, mercifully ending its life with a single thrust.
-    </button>
-    <br>
-    <button onclick="incrementMagic()">
-        Use herbs from your pack to put it to sleep.
-    </button>
-    <br>
-    <button onclick="incrementStealth()">
-        Do not interfere in the natural evolution of events, but rather take the opportunity to learn more about a
-        strange animal you have never seen before.
-    </button>
-</div>
-
-<div id=quiz-question-2 style="display: none;">
-    <p>
-        One Summer afternoon your father gives you a choice of chores.
-    </p>
-    <button onclick="incrementCombat()">
-        Work in the forge with him casting iron for a new plow.
-    </button>
-    <br>
-    <button onclick="incrementMagic()">
-        Gather herbs for your mother who is preparing dinner.
-    </button>
-    <br>
-    <button onclick="incrementStealth()">
-        Go catch fish at the stream using a net and line.
-    </button>
-</div>
-
-<div id=quiz-question-3 style="display: none;">
-    <p>
-        Your cousin has given you a very embarrassing nickname and, even worse, likes to call you it in front of
-        your friends. You asked him to stop, but he finds it very amusing to watch you blush.
-    </p>
-    <button onclick="incrementCombat()">
-        Beat up your cousin, then tell him that if he ever calls you that nickname again, you will bloody him worse
-        than this time.
-    </button>
-    <br>
-    <button onclick="incrementMagic()">
-        Make up a story that makes your nickname a badge of honor instead of something humiliating.
-    </button>
-    <br>
-    <button onclick="incrementStealth()">
-        Make up an even more embarrassing nickname for him and use it constantly until he learns his lesson.
-    </button>
-</div>
-
-<div id=quiz-question-4 style="display: none;">
-    <p>
-        There is a lot of heated discussion at the local tavern over a group of people called 'Telepaths'. They have
-        been hired by certain City-State kings. Rumor has it these Telepaths read a person's mind and tell their
-        lord whether a follower is telling the truth or not.
-    </p>
-    <button onclick="incrementCombat()">
-        This is a terrible practice. A person's thoughts are his own and no one, not even a king, has the right to
-        make such an invasion into another human's mind.
-    </button>
-    <br>
-    <button onclick="incrementMagic()">
-        Loyal followers to the king have nothing to fear from a Telepath. It is important to have a method of
-        finding assassins and spies before it is too late.
-    </button>
-    <br>
-    <button onclick="incrementStealth()">
-        In these times, it is a necessary evil. Although you do not necessarily like the idea, a Telepath could have
-        certain advantages during a time of war or in finding someone innocent of a crime.
-    </button>
-</div>
-
-<div id=quiz-question-5 style="display: none;">
-    <p>
-        Your mother sends you to the market with a list of goods to buy. After you finish you find that by mistake a
-        shopkeeper has given you too much money back in exchange for one of the items.
-    </p>
-    <button onclick="incrementCombat()">
-        Return to the store and give the shopkeeper his hard-earned money, explaining to him the mistake.
-    </button>
-    <br>
-    <button onclick="incrementMagic()">
-        Decide to put the extra money to good use and purchase items that would help your family.
-    </button>
-    <br>
-    <button onclick="incrementStealth()">
-        Pocket the extra money, knowing that shopkeepers in general tend to overcharge customers anyway.
-    </button>
-</div>
-
-<div id=quiz-question-6 style="display: none;">
-    <p>
-        While in the market place you witness a thief cut a purse from a noble. Even as he does so, the noble
-        notices and calls for the city guards. In his haste to get away, the thief drops the purse near you.
-        Surprisingly no one seems to notice the bag of coins at your feet.
-    </p>
-    <button onclick="incrementCombat()">
-        Pick up the bag and signal to the guard, knowing that the only honorable thing to do is return the money to
-        its rightful owner.
-    </button>
-    <br>
-    <button onclick="incrementMagic()">
-        Leave the bag there, knowing that it is better not to get involved.
-    </button>
-    <br>
-    <button onclick="incrementStealth()">
-        Pick up the bag and pocket it, knowing that the extra windfall will help your family in times of trouble.
-    </button>
-</div>
-
-<div id=quiz-question-7 style="display: none;">
-    <p>
-        Your father sends you on a task which you loathe, cleaning the stables. On the way there, pitchfork in hand,
-        you run into your friend from the homestead near your own. He offers to do it for you, in return for a
-        future favor of his choosing.
-    </p>
-    <button onclick="incrementCombat()">
-        Decline his offer, knowing that your father expects you to do the work, and it is better not to be in debt.
-    </button>
-    <br>
-    <button onclick="incrementMagic()">
-        Ask him to help you, knowing that two people can do the job faster than one, and agree to help him with one
-        task of his choosing in the future.
-    </button>
-    <br>
-    <button onclick="incrementStealth()">
-        Accept his offer, reasoning that as long as the stables are cleaned, it matters not who does the cleaning.
-    </button>
-</div>
-
-<div id=quiz-question-8 style="display: none;">
-    <p>
-        Your mother asks you to help fix the stove. While you are working, a very hot pipe slips its mooring and
-        falls towards her.
-    </p>
-    <button onclick="incrementCombat()">
-        Position yourself between the pipe and your mother.
-    </button>
-    <br>
-    <button onclick="incrementMagic()">
-        Grab the hot pipe and try to push it away.
-    </button>
-    <br>
-    <button onclick="incrementStealth()">
-        Push your mother out of the way.
-    </button>
-</div>
-
-<div id=quiz-question-9 style="display: none;">
-    <p>
-        While in town the baker gives you a sweetroll. Delighted, you take it into an alley to enjoy only to be
-        intercepted by a gang of three other kids your age. The leader demands the sweetroll, or else he and his
-        friends will beat you and take it.
-    </p>
-    <button onclick="incrementCombat()">
-        Drop the sweetroll and step on it, then get ready for the fight.
-    </button>
-    <br>
-    <button onclick="incrementMagic()">
-        Give him the sweetroll now without argument, knowing that later this afternoon you will have all your
-        friends with you and can come and take whatever he owes you.
-    </button>
-    <br>
-    <button onclick="incrementStealth()">
-        Act like you're going to give him the sweetroll, but at the last minute throw it in the air, hoping that
-        they'll pay attention to it long enough for you to get a shot in on the leader.
-    </button>
-</div>
-
-<div id=quiz-question-10 style="display: none;">
-    <p>
-        Entering town you find that you are witness to a very well-dressed man running from a crowd. He screams to
-        you for help. The crowd behind him seem very angry.
-    </p>
-    <button onclick="incrementCombat()">
-        Rush to the town's aid immediately, despite your lack of knowledge of the circumstances.
-    </button>
-    <br>
-    <button onclick="incrementMagic()">
-        Stand aside and allow the man and the mob to pass, realizing it is probably best not to get involved.
-    </button>
-    <br>
-    <button onclick="incrementStealth()">
-        Rush to the man's aid immediately, despite your lack of knowledge of the circumstances.
-    </button>
+<div id="quiz-question">
+    <p id="question-count"></p>
+    <p id="question-prompt"></p>
+    <div id="answer-buttons"></div>
 </div>
 
 <div id="quiz-result" style="display: none;">
     <h3>You are a: <span id="class-name"></span></h3>
-    <img id="class-image" src="">
+    <img id="class-image" src="" alt="Class image">
     <p id="class-description"></p>
+    <p id="result-extra">Your selected answers are also stored in your browser under local storage key <code style="color: white;">morrowindQuizState</code>.</p>
     <br>
-    <button onclick="restartQuiz()">
-        Restart quiz
-    </button>
+    <button onclick="restartQuiz()">Restart quiz</button>
 </div>
-
 </body>
 
 <script>
-    let currentQuestion = 1;
+    const quizQuestions = [
+        {
+            prompt: "On a clear day you chance upon a strange animal, its leg trapped in a hunter's clawsnare. Judging from the bleeding it will not survive long.",
+            answers: [
+                { label: "A", text: "Draw your dagger, mercifully ending its life with a single thrust.", score: "combat" },
+                { label: "B", text: "Use herbs from your pack to put it to sleep.", score: "magic" },
+                { label: "C", text: "Leave it to its fate. Do not interfere.", score: "stealth" },
+                { label: "D", text: "Stay with the creature and try to comfort it in its final moments; no living thing should die alone.", score: "magic" },
+                { label: "E", text: "Learn as much as you can from this. Study the creature, the snare, its injuries, everything you can.", score: "magic" }
+            ]
+        },
+        {
+            prompt: "One Summer afternoon your father gives you a choice of chores.",
+            answers: [
+                { label: "A", text: "Work in the forge with him casting iron for a new plow.", score: "combat" },
+                { label: "B", text: "Gather herbs for your mother who is preparing dinner.", score: "magic" },
+                { label: "C", text: "Go catch fish at the stream using a net and line.", score: "stealth" },
+                { label: "D", text: "Take a sack of grain to the mill and bring back flour before supper.", score: "combat" },
+                { label: "E", text: "Scrub the cooking pots, sweep the floor, and clean the kitchen before your mother returns.", score: "magic" }
+            ]
+        },
+        {
+            prompt: "Your cousin has given you a very embarrassing nickname and, even worse, likes to call you it in front of your friends. You asked him to stop, but he finds it very amusing to watch you blush.",
+            answers: [
+                { label: "A", text: "Beat up your cousin, then tell him that if he ever calls you that nickname again, you will bloody him worse than this time.", score: "combat" },
+                { label: "B", text: "Make up a story that makes your nickname a badge of honor instead of something humiliating.", score: "magic" },
+                { label: "C", text: "Make up an even more embarrassing nickname for him and use it constantly until he learns his lesson.", score: "stealth" },
+                { label: "D", text: "Challenge your cousin to a race, wrestling match, or contest, intending to settle the matter through competition.", score: "combat" },
+                { label: "E", text: "Win over your friends so thoroughly that when your cousin uses the nickname, they dismiss him instead of laughing with him.", score: "stealth" }
+            ]
+        },
+        {
+            prompt: "There is a lot of heated discussion at the local tavern over a group of people called 'Telepaths'. They have been hired by certain City-State kings. Rumor has it these Telepaths read a person's mind and tell their lord whether a follower is telling the truth or not.",
+            answers: [
+                { label: "A", text: "This is a terrible practice. A person's thoughts are his own and no one, not even a king, has the right to make such an invasion into another person's mind.", score: "combat" },
+                { label: "B", text: "Loyal followers to the king have nothing to fear from a Telepath. It is important to have a method of finding assassins and spies before it is too late.", score: "magic" },
+                { label: "C", text: "In these times, it is a necessary evil. Although you do not necessarily like the idea, a Telepath could have certain advantages during a time of war or in finding someone innocent of a crime.", score: "stealth" },
+                { label: "D", text: "The rumors are likely exaggerated. People fear Telepaths most because they do not understand them.", score: "magic" },
+                { label: "E", text: "Learn how the Telepaths' system works, then look for clever ways to evade it and turn that knowledge to your advantage.", score: "stealth" }
+            ]
+        },
+        {
+            prompt: "Your mother sends you to the market with a list of goods to buy. After you finish you find that by mistake a shopkeeper has given you too much money back in exchange for one of the items.",
+            answers: [
+                { label: "A", text: "Return to the store and give the shopkeeper his hard-earned money, explaining to him the mistake.", score: "combat" },
+                { label: "B", text: "Decide to put the extra money to good use and purchase items that would help your family.", score: "magic" },
+                { label: "C", text: "Pocket the extra money, knowing that shopkeepers in general tend to overcharge customers anyway.", score: "stealth" },
+                { label: "D", text: "Slip the extra money back onto the merchant's counter or into the till without saying a word, avoiding thanks or attention.", score: "stealth" },
+                { label: "E", text: "Share the extra money with a beggar or hungry child nearby.", score: "magic" }
+            ]
+        },
+        {
+            prompt: "While in the market place you witness a thief cut a purse from a noble. Even as he does so, the noble notices and calls for the city guards. In his haste to get away, the thief drops the purse near you. Surprisingly no one seems to notice the bag of coins at your feet.",
+            answers: [
+                { label: "A", text: "Pick up the bag and signal to the guard, knowing that the only honorable thing to do is return the money to its rightful owner.", score: "combat" },
+                { label: "B", text: "Leave the bag there, knowing that it is better not to get involved.", score: "magic" },
+                { label: "C", text: "Pick up the bag and pocket it, knowing that the extra windfall will help your family in times of trouble.", score: "stealth" },
+                { label: "D", text: "Quietly pick up the purse and chase after the thief, admiring the skill of the cut and wanting to see how the situation ends.", score: "stealth" },
+                { label: "E", text: "Pick up the purse and run after the guards, eager to be part of the chase and the excitement.", score: "combat" }
+            ]
+        },
+        {
+            prompt: "Your father sends you on a task which you loathe, cleaning the stables. On the way there, pitchfork in hand, you run into your friend from the homestead near your own. He offers to do it for you, in return for a future favor of his choosing.",
+            answers: [
+                { label: "A", text: "Decline his offer, knowing that your father expects you to do the work, and it is better not to be in debt.", score: "combat" },
+                { label: "B", text: "Ask him to help you, knowing that two people can do the job faster than one, and agree to help him with one task of his choosing in the future.", score: "magic" },
+                { label: "C", text: "Accept his offer, reasoning that as long as the stables are cleaned, it matters not who does the cleaning.", score: "stealth" },
+                { label: "D", text: "Shrug off the chore for now and go off to play with your friend, deciding the stables can wait until later.", score: "stealth" },
+                { label: "E", text: "Persuade a few children to do the work, turning the hated chore into a small enterprise.", score: "stealth" }
+            ]
+        },
+        {
+            prompt: "Your mother asks you to help fix the stove. While you are working, a very hot pipe slips its mooring and falls towards her.",
+            answers: [
+                { label: "A", text: "Position yourself between the pipe and your mother.", score: "combat" },
+                { label: "B", text: "Grab the hot pipe and try to push it away.", score: "magic" },
+                { label: "C", text: "Push your mother out of the way.", score: "stealth" },
+                { label: "D", text: "Shout a warning to your mother and leap back, trusting her to react in time.", score: "magic" },
+                { label: "E", text: "Freeze in place and do nothing until the moment has already passed.", score: "stealth" }
+            ]
+        },
+        {
+            prompt: "While in town the baker gives you a sweetroll. Delighted, you take it into an alley to enjoy only to be intercepted by a gang of three other kids your age. The leader demands the sweetroll, or else he and his friends will beat you and take it.",
+            answers: [
+                { label: "A", text: "Drop the sweetroll and step on it, then get ready for the fight.", score: "combat" },
+                { label: "B", text: "Give him the sweetroll now without argument, knowing that later this afternoon you will have all your friends with you and can come and take whatever he owes you.", score: "magic" },
+                { label: "C", text: "Act like you're going to give him the sweetroll, but at the last minute throw it in the air, hoping that they'll pay attention to it long enough for you to get a shot in on the leader.", score: "stealth" },
+                { label: "D", text: "Hand over the sweetroll, but memorize the leader's face and mannerisms so you can settle things properly another day.", score: "stealth" },
+                { label: "E", text: "Offer the sweetroll to the smallest or quietest of the three, trying to divide the gang against itself.", score: "magic" }
+            ]
+        },
+        {
+            prompt: "Entering town you find that you are witness to a very well-dressed man running from a crowd. He screams to you for help. The crowd behind him seem very angry.",
+            answers: [
+                { label: "A", text: "Rush to the town's aid immediately, despite your lack of knowledge of the circumstances.", score: "combat" },
+                { label: "B", text: "Stand aside and allow the man and the mob to pass, realizing it is probably best not to get involved.", score: "magic" },
+                { label: "C", text: "Rush to the man's aid immediately, despite your lack of knowledge of the circumstances.", score: "stealth" },
+                { label: "D", text: "Turn to the crowd and try to calm them, believing anger should be answered with reason before blood is spilled.", score: "magic" },
+                { label: "E", text: "Knock the man to the ground yourself and hold him there until the truth of the matter can be sorted out.", score: "combat" }
+            ]
+        }
+    ];
 
+    let currentQuestion = 1;
     let combatCount = 0;
     let magicCount = 0;
     let stealthCount = 0;
+    let recordedAnswers = [];
 
-    let incrementCombat = () => {
-        combatCount++
-        nextQuestion()
-    }
-    let incrementMagic = () => {
-        magicCount++
-        nextQuestion()
-    }
-    let incrementStealth = () => {
-        stealthCount++
-        nextQuestion()
-    }
+    const STORAGE_KEY = 'morrowindQuizState';
 
-    let nextQuestion = () => {
-        if (currentQuestion === 10) {
-            displayResult()
-            return
+    const persistQuizState = () => {
+        const state = {
+            currentQuestion,
+            combatCount,
+            magicCount,
+            stealthCount,
+            resultClass: className || null,
+            recordedAnswers
+        };
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    };
+
+    const resetStoredQuizState = () => {
+        localStorage.removeItem(STORAGE_KEY);
+    };
+
+    const incrementCombat = () => {
+        combatCount++;
+    };
+    const incrementMagic = () => {
+        magicCount++;
+    };
+    const incrementStealth = () => {
+        stealthCount++;
+    };
+
+    const scoreAnswer = (scoreType) => {
+        if (scoreType === 'combat') incrementCombat();
+        if (scoreType === 'magic') incrementMagic();
+        if (scoreType === 'stealth') incrementStealth();
+    };
+
+    const recordAnswer = (answerIndex) => {
+        const question = quizQuestions[currentQuestion - 1];
+        const answer = question.answers[answerIndex];
+
+        recordedAnswers.push({
+            questionNumber: currentQuestion,
+            prompt: question.prompt,
+            choice: answer.label,
+            answerText: answer.text,
+            score: answer.score
+        });
+
+        scoreAnswer(answer.score);
+        persistQuizState();
+        nextQuestion();
+    };
+
+    const renderQuestion = () => {
+        const question = quizQuestions[currentQuestion - 1];
+        $('#question-count').text('Question ' + currentQuestion + ' of ' + quizQuestions.length);
+        $('#question-prompt').text(question.prompt);
+
+        const buttonsHtml = question.answers.map((answer, index) => {
+            return '<button onclick="recordAnswer(' + index + ')"><span class="answer-label">' + answer.label + '.</span> ' + escapeHtml(answer.text) + '</button>';
+        }).join('');
+
+        $('#answer-buttons').html(buttonsHtml);
+    };
+
+    const nextQuestion = () => {
+        if (currentQuestion === quizQuestions.length) {
+            displayResult();
+            return;
         }
 
-        $('#quiz-question-' + currentQuestion).hide()
+        currentQuestion++;
+        renderQuestion();
+        new Audio('audio-files/' + (4 + currentQuestion) + '-quiz-' + currentQuestion + '.mp3').play();
+    };
 
-        currentQuestion++
-
-        $('#quiz-question-' + currentQuestion).show()
-
-        new Audio('audio-files/' + (4 + currentQuestion) + '-quiz-' + currentQuestion + '.mp3').play()
-    }
-
-    let playAudio = (fileName, button1, button2, timeout) => {
+    const playAudio = (fileName, button1, button2, timeout) => {
         new Audio(fileName).play();
-        $(button1).hide()
+        $(button1).hide();
 
         setTimeout(() => {
-            $(button2).show()
+            $(button2).show();
         }, timeout);
-    }
-    let playAudio1 = () => {
-        let themeAudio = new Audio('audio-files/theme.mp3')
-        themeAudio.loop = true
-        themeAudio.volume = 0.15
-        themeAudio.play()
+    };
 
-        $('#audio-message').hide()
+    const playAudio1 = () => {
+        const themeAudio = new Audio('audio-files/theme.mp3');
+        themeAudio.loop = true;
+        themeAudio.volume = 0.15;
+        themeAudio.play();
 
-        playAudio('audio-files/1-boat-guard.mp3', '#button-1', '#button-2', 3000)
-    }
-    let playAudio2 = () => {
-        playAudio('audio-files/2-dock-guard.mp3', '#button-2', '#button-3', 3000)
-    }
-    let playAudio3 = () => {
-        playAudio('audio-files/3-dock-guard.mp3', '#button-3', '#button-4', 5000)
-    }
-    let playAudio4 = () => {
-        playAudio('audio-files/4-quiz-welcome.mp3', '#button-4', '#button-5', 9000)
-    }
-    let playAudio5 = () => {
-        playAudio('audio-files/5-quiz-1.mp3', '#button-5', '#quiz-question-1', 0)
-    }
+        $('#audio-message').hide();
+        playAudio('audio-files/1-boat-guard.mp3', '#button-1', '#button-2', 3000);
+    };
+
+    const playAudio2 = () => {
+        playAudio('audio-files/2-dock-guard.mp3', '#button-2', '#button-3', 3000);
+    };
+
+    const playAudio3 = () => {
+        playAudio('audio-files/3-dock-guard.mp3', '#button-3', '#button-4', 5000);
+    };
+
+    const playAudio4 = () => {
+        playAudio('audio-files/4-quiz-welcome.mp3', '#button-4', '#button-5', 9000);
+    };
+
+    const playAudio5 = () => {
+        renderQuestion();
+        playAudio('audio-files/5-quiz-1.mp3', '#button-5', '#quiz-question', 0);
+    };
 
     let classKey;
     let className;
-    let displayResult = () => {
+    const displayResult = () => {
         if (combatCount >= 7) {
-            className = 'Warrior'
+            className = 'Warrior';
         } else if (magicCount >= 7) {
-            className = 'Mage'
+            className = 'Mage';
         } else if (stealthCount >= 7) {
-            className = 'Thief'
+            className = 'Thief';
         } else if (combatCount === 4) {
-            className = 'Rogue'
+            className = 'Rogue';
         } else {
-            classKey = new String(combatCount).toString() + new String(magicCount).toString() + new String(stealthCount).toString()
-            className = quizResultLookup[classKey]
+            classKey = String(combatCount) + String(magicCount) + String(stealthCount);
+            className = quizResultLookup[classKey];
         }
 
-        $('#class-name').text(className)
-        $('#class-image').attr('src', classInfo[className].image)
-        $('#class-description').text(classInfo[className].description)
+        persistQuizState();
 
-        $('#quiz-question-10').hide()
-        $('#quiz-result').show()
-    }
+        $('#class-name').text(className || 'Unresolved');
 
-    let restartQuiz = () => {
-        combatCount = 0
-        magicCount = 0
-        stealthCount = 0
-        currentQuestion = 1
+        if (classInfo[className]) {
+            $('#class-image').attr('src', classInfo[className].image).show();
+            $('#class-description').text(classInfo[className].description);
+        } else {
+            $('#class-image').hide();
+            $('#class-description').text('The extra answer options changed the score pattern in a way that is not covered by the original lookup table yet.');
+        }
 
-        $('#quiz-result').hide()
-        $('#quiz-question-1').show()
-        playAudio5()
-    }
+        $('#quiz-question').hide();
+        $('#quiz-result').show();
+    };
 
-    let quizResultLookup = {
+    const restartQuiz = () => {
+        combatCount = 0;
+        magicCount = 0;
+        stealthCount = 0;
+        currentQuestion = 1;
+        recordedAnswers = [];
+        resetStoredQuizState();
+
+        $('#quiz-result').hide();
+        $('#quiz-question').show();
+        playAudio5();
+    };
+
+    const escapeHtml = (unsafe) => {
+        return unsafe
+            .replaceAll('&', '&amp;')
+            .replaceAll('<', '&lt;')
+            .replaceAll('>', '&gt;')
+            .replaceAll('"', '&quot;')
+            .replaceAll("'", '&#039;');
+    };
+
+    const quizResultLookup = {
         "226": "Acrobat",
         "316": "Agent",
         "550": "Archer",
@@ -375,11 +404,10 @@
         "352": "Witchhunter",
         "253": "Witchhunter",
         "154": "Witchhunter",
-        "055": "Witchhunter",
-    }
+        "055": "Witchhunter"
+    };
 
-
-    let classInfo = {
+    const classInfo = {
         "Acrobat": {
             "image": "image-files/Acrobat.jpg",
             "description": "Acrobat is a polite euphemism for agile burglars and second-story men. These thieves avoid detection by stealth, and rely on mobility and cunning to avoid capture."
@@ -455,9 +483,7 @@
         "Witchhunter": {
             "image": "image-files/Witchhunter.jpg",
             "description": "Witchhunters are dedicated to rooting out and destroying the perverted practices of dark cults and profane sorcery. They train for martial, magical, and stealthy war against vampires, witches, warlocks, and necromancers."
-        },
-    }
-
+        }
+    };
 </script>
-
 </html>
